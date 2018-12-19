@@ -47,8 +47,8 @@ mod random;
 mod signature;
 mod secret;
 mod extended;
-mod mem;
 
+pub mod mem;
 pub mod brain_recover;
 pub mod crypto;
 pub mod math;
@@ -65,7 +65,6 @@ pub use self::random::Random;
 pub use self::signature::{sign, verify_public, verify_address, recover, Signature};
 pub use self::secret::Secret;
 pub use self::extended::{ExtendedPublic, ExtendedSecret, ExtendedKeyPair, DerivationError, Derivation};
-pub use self::mem;
 
 use ethereum_types::H256;
 
