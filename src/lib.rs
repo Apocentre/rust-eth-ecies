@@ -20,7 +20,6 @@ extern crate byteorder;
 extern crate edit_distance;
 extern crate parity_crypto;
 extern crate ethereum_types;
-extern crate mem;
 extern crate parity_wordlist;
 #[macro_use]
 extern crate quick_error;
@@ -65,6 +64,7 @@ pub use self::random::Random;
 pub use self::signature::{sign, verify_public, verify_address, recover, Signature};
 pub use self::secret::Secret;
 pub use self::extended::{ExtendedPublic, ExtendedSecret, ExtendedKeyPair, DerivationError, Derivation};
+pub use self::mem;
 
 use ethereum_types::H256;
 
