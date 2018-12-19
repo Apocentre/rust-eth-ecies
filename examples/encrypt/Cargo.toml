@@ -1,0 +1,8 @@
+[package]
+name = "encrypt"
+version = "0.1.0"
+authors = ["tritone11"]
+edition = "2018"
+
+[dependencies]
+eth-ecies = { git = "https://github.com/tritone11/rust-eth-ecies" }
