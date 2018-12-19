@@ -20,7 +20,6 @@ extern crate byteorder;
 extern crate edit_distance;
 extern crate parity_crypto;
 extern crate ethereum_types;
-extern crate mem;
 extern crate parity_wordlist;
 #[macro_use]
 extern crate quick_error;
@@ -67,6 +66,7 @@ pub use self::secret::Secret;
 pub use self::extended::{ExtendedPublic, ExtendedSecret, ExtendedKeyPair, DerivationError, Derivation};
 
 use ethereum_types::H256;
+use std::mem;
 
 pub use ethereum_types::{Address, Public};
 pub type Message = H256;
