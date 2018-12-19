@@ -67,7 +67,6 @@ pub use self::extended::{ExtendedPublic, ExtendedSecret, ExtendedKeyPair, Deriva
 pub use self::mem;
 
 use ethereum_types::H256;
-use std::mem;
 
 pub use ethereum_types::{Address, Public};
 pub type Message = H256;
