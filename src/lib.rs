@@ -36,18 +36,19 @@ extern crate log;
 #[macro_use]
 extern crate serde_derive;
 
-mod brain;
-mod brain_prefix;
-mod error;
-mod keypair;
-mod keccak;
-mod password;
-mod prefix;
-mod random;
-mod signature;
-mod secret;
-mod extended;
+pub mod brain;
+pub mod brain_prefix;
+pub mod error;
+pub mod keypair;
+pub mod keccak;
+pub mod password;
+pub mod prefix;
+pub mod random;
+pub mod signature;
+pub mod secret;
+pub mod extended;
 
+pub mod mem;
 pub mod brain_recover;
 pub mod crypto;
 pub mod math;
@@ -64,7 +65,6 @@ pub use self::random::Random;
 pub use self::signature::{sign, verify_public, verify_address, recover, Signature};
 pub use self::secret::Secret;
 pub use self::extended::{ExtendedPublic, ExtendedSecret, ExtendedKeyPair, DerivationError, Derivation};
-pub use self::mem;
 
 use ethereum_types::H256;
 
