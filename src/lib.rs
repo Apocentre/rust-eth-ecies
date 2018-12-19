@@ -47,6 +47,7 @@ mod random;
 mod signature;
 mod secret;
 mod extended;
+mod mem;
 
 pub mod brain_recover;
 pub mod crypto;
