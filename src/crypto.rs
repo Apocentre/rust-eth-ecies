@@ -160,8 +160,8 @@ pub mod ecies {
 			hasher.update(secret);
 			hasher.update(s1);
 			let d = hasher.finish();
-			&mut dest[written..(written + 32)].copy_from_slice(&d);
-			written += 32;
+			&mut dest[written..(written + 16)].copy_from_slice(&d);
+			written += 16;
 			ctr += 1;
 		}
 	}
