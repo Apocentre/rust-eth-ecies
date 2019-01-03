@@ -154,14 +154,14 @@ pub mod ecies {
 		let mut ctr = 1u32;
 		let mut written = 0usize;
 		while written < dest.len() {
-			let mut hasher = digest::Hasher::sha512();
+			let mut hasher = digest::Hasher::sha256();
 			let ctrs = [(ctr >> 24) as u8, (ctr >> 16) as u8, (ctr >> 8) as u8, ctr as u8];
 			hasher.update(&ctrs);
 			hasher.update(secret);
 			hasher.update(s1);
 			let d = hasher.finish();
-			&mut dest[written..(written + 64)].copy_from_slice(&d);
-			written += 64;
+			&mut dest[written..(written + 32)].copy_from_slice(&d);
+			written += 32;
 			ctr += 1;
 		}
 	}
