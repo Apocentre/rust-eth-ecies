@@ -112,7 +112,6 @@ pub mod ecies {
 	/// and authenticated data validity.
 	pub fn decrypt(secret: &Secret, auth_data: &[u8], encrypted: &[u8]) -> Result<Vec<u8>, Error> {
 		let meta_len = 1 + 64 + 16 + 32;
-		println!("len {:?}",encrypted.len());
 		if encrypted.len() < meta_len  || encrypted[0] < 2 || encrypted[0] > 4 {
 			return Err(Error::InvalidMessage); //invalid message: publickey
 		}
@@ -124,7 +123,7 @@ pub mod ecies {
 		kdf(&z, &[0u8; 0], &mut key);
 
 		let ekey = &key[0..16];
-		let mkey = hmac::SigKey::sha512(&digest::sha256(&key[16..32]));
+		let mkey = hmac::SigKey::sha256(&digest::sha256(&key[16..32]));
 
 		let clen = encrypted.len() - meta_len;
 		let cipher_with_iv = &e[64..(64+16+clen)];
