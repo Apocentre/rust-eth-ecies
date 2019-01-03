@@ -142,7 +142,7 @@ pub mod ecies {
 		}
 
 		let mut msg = vec![0u8; clen];
-		aes::decrypt_128_ctr(ekey, cipher_iv, cipher_no_iv, &mut msg[..])?;
+		aes::decrypt_256_cbc(ekey, cipher_iv, cipher_no_iv, &mut msg[..])?;
 		Ok(msg)
 	}
 
