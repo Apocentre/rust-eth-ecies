@@ -79,13 +79,13 @@ pub mod ecies {
 	pub fn encrypt(public: &Public, auth_data: &[u8], plain: &[u8]) -> Result<Vec<u8>, Error> {
 		let r = Random.generate()?;
 		let z = ecdh::agree(r.secret(), public)?;
-		let mut key = [0u8; 32];
+		let mut key = [0u8; 64];
 		kdf(&z, &[0u8; 0], &mut key);
 
-		let ekey = &key[0..16];
-		let mkey = hmac::SigKey::sha256(&digest::sha256(&key[16..32]));
+		let ekey = &key[0..32];
+		let mkey = hmac::SigKey::sha512(&digest::sha256(&key[32..64]));
 
-		let mut msg = vec![0u8; 1 + 64 + 16 + plain.len() + 32];
+		let mut msg = vec![0u8; 1 + 64 + 32 + plain.len() + 32];
 		msg[0] = 0x04u8;
 		{
 			let msgd = &mut msg[1..];
@@ -93,17 +93,17 @@ pub mod ecies {
 			let iv = H128::random();
 			msgd[64..80].copy_from_slice(&iv);
 			{
-				let cipher = &mut msgd[(64 + 16)..(64 + 16 + plain.len())];
+				let cipher = &mut msgd[(64 + 32)..(64 + 32 + plain.len())];
 				aes::encrypt_256_cbc(ekey, &iv, plain, cipher)?;
 			}
 			let mut hmac = hmac::Signer::with(&mkey);
 			{
-				let cipher_iv = &msgd[64..(64 + 16 + plain.len())];
+				let cipher_iv = &msgd[64..(64 + 32 + plain.len())];
 				hmac.update(cipher_iv);
 			}
 			hmac.update(auth_data);
 			let sig = hmac.sign();
-			msgd[(64 + 16 + plain.len())..].copy_from_slice(&sig);
+			msgd[(64 + 32 + plain.len())..].copy_from_slice(&sig);
 		}
 		Ok(msg)
 	}
@@ -119,17 +119,17 @@ pub mod ecies {
 		let e = &encrypted[1..];
 		let p = Public::from_slice(&e[0..64]);
 		let z = ecdh::agree(secret, &p)?;
-		let mut key = [0u8; 32];
+		let mut key = [0u8; 64];
 		kdf(&z, &[0u8; 0], &mut key);
 
-		let ekey = &key[0..16];
-		let mkey = hmac::SigKey::sha256(&digest::sha256(&key[16..32]));
+		let ekey = &key[0..32];
+		let mkey = hmac::SigKey::sha256(&digest::sha256(&key[32..64]));
 
 		let clen = encrypted.len() - meta_len;
-		let cipher_with_iv = &e[64..(64+16+clen)];
-		let cipher_iv = &cipher_with_iv[0..16];
-		let cipher_no_iv = &cipher_with_iv[16..];
-		let msg_mac = &e[(64+16+clen)..];
+		let cipher_with_iv = &e[64..(64+32+clen)];
+		let cipher_iv = &cipher_with_iv[0..32];
+		let cipher_no_iv = &cipher_with_iv[32..];
+		let msg_mac = &e[(64+32+clen)..];
 
 		// Verify tag
 		let mut hmac = hmac::Signer::with(&mkey);
